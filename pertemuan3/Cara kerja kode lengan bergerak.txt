@@ -1,0 +1,45 @@
+Cara kerja kode lengan bergerak  
+
+1. Variabel
+static int shoulder = 0, elbow = 0;
+dua variable menyimpan sudut rotasi. Terdapat sholder untuk lengan atas dan elbow untuk lengan bawah
+kedua variabel ini akan berubah tergantung tombol keyboard yang di tekan
+
+2. Fungsi Display : menggunakan Matrix stack 
+    menggerakkan bahu. Agar kubus berputar diujungnya, menggeser objek dititik pusat (0,0), memutarnya kemudian menggeser ke posisi awal
+        glTranslatef (-1.0, 0.0, 0.0);   
+        glRotatef ((GLfloat) shoulder, 0.0, 0.0, 1.0);            
+        glTranslatef (1.0, 0.0, 0.0);
+    
+    menggambar lengan atas. glPushMatrix digunakan agar perintah glScalef hanya memperngaruhi lengan atas saja, tidak menggangu lengan bawah
+        glPushMatrix();   
+            glScalef (2.0, 0.4, 1.0);                
+            glutWireCube (1.0);            
+        glPopMatrix(); 
+
+    menggerakkan siku. posisi siku selali mengikuti posisi ujung lengan atas.
+        glTranslatef (1.0, 0.0, 0.0);   
+        glRotatef ((GLfloat) elbow, 0.0, 0.0, 1.0);            
+        glTranslatef (1.0, 0.0, 0.0);
+
+3. Fungsi keyboard
+    jika kita menekan 's', nilai variabel sholder bertambah 5 derajat, begitu sebaliknya jika 'S'
+    glutPostRedisplay() untuk menggambar ulang dengan nilai sudut baru
+
+4. Fungsi reshape
+    gluPerspective(65.0, (GLfloat) w/(GLfloat) h, 1.0, 20.0);        
+    mengatur sudut pandang agar terlihat 3D
+
+    glTranslatef (0.0, 0.0, -5.0);
+    menjauhkan kamera sejauh 5 satuan agar kita bisa melihat objek lengan secara keseluruhan
+
+Alur:
+1. kita tekan 's'
+2. variabel sholder nambah 5
+3. layar dibersihkan
+4. matriks berputar berdasarkan nilai shoulder
+5. Lengan atas digambar
+6. koordinat lanjut dari ujung lengan atas
+7. matriks berputar berdasarkan nilai elbow
+8. lengan bawah digambar
+9. Hasil ditampilkan dilayar.
